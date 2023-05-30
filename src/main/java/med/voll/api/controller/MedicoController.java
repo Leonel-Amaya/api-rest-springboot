@@ -1,6 +1,10 @@
 package med.voll.api.controller;
 
+import jakarta.validation.Valid;
 import med.voll.api.medico.DatosRegistroMedicos;
+import med.voll.api.medico.Medico;
+import med.voll.api.medico.MedicoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,9 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/medicos")//Mapea endpoint
 public class MedicoController {
+
+    @Autowired
+    private MedicoRepository medicoRepository;
+
     @PostMapping
-    public void registrarMedico(@RequestBody DatosRegistroMedicos datosRegistroMedicos) {
-        System.out.println("El request llega correctamente");
-        System.out.println(datosRegistroMedicos);
+    public void registrarMedico(@RequestBody @Valid DatosRegistroMedicos datosRegistroMedicos) {
+        medicoRepository.save(new Medico(datosRegistroMedicos));
     }
 }
