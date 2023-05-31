@@ -36,4 +36,9 @@ public class MedicoController {
         return medicoRepository.findAll(paginacion).map(DatoListadoMedico::new);
     }
     //Trae consigo los datos seleccionados en DatosListadoMedico pero formateados en páginas
+
+    @PutMapping
+    public void actualizarMedico() {
+
+    }
 }
