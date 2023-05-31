@@ -31,7 +31,8 @@ public class MedicoController {
 
     @GetMapping
     public Page<DatoListadoMedico> listadoMedicos(@PageableDefault(size = 2) Pageable paginacion) {
-        return medicoRepository.findAll(paginacion).map(DatoListadoMedico::new);
+//        return medicoRepository.findAll(paginacion).map(DatoListadoMedico::new);
+        return medicoRepository.findByActivoTrue(paginacion).map(DatoListadoMedico::new);
     }
     //Trae consigo los datos seleccionados en DatosListadoMedico pero formateados en páginas
 
@@ -44,8 +45,15 @@ public class MedicoController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    //DELETE LOGICO
     public void eliminarMedico(@PathVariable Long id){
         Medico medico = medicoRepository.getReferenceById(id);
-        medicoRepository.delete(medico);
+        medico.desactivarMedico();
     }
+
+//    DELETE BASE DE DATOS
+//    public void eliminarMedico(@PathVariable Long id){
+//        Medico medico = medicoRepository.getReferenceById(id);
+//        medicoRepository.delete(medico);
+//    }
 }
