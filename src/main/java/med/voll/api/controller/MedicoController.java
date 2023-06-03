@@ -43,9 +43,9 @@ public class MedicoController {
     //Esta porción del código trae consigo los datos seleccionados pero no de modo de paginación
 
     @GetMapping
-    public Page<DatoListadoMedico> listadoMedicos(@PageableDefault(size = 2) Pageable paginacion) {
+    public ResponseEntity<Page<DatoListadoMedico>> listadoMedicos(@PageableDefault(size = 2) Pageable paginacion) {
 //        return medicoRepository.findAll(paginacion).map(DatoListadoMedico::new);
-        return medicoRepository.findByActivoTrue(paginacion).map(DatoListadoMedico::new);
+        return ResponseEntity.ok(medicoRepository.findByActivoTrue(paginacion).map(DatoListadoMedico::new));
     }
     //Trae consigo los datos seleccionados en DatosListadoMedico pero formateados en páginas
 
@@ -75,4 +75,15 @@ public class MedicoController {
 //        Medico medico = medicoRepository.getReferenceById(id);
 //        medicoRepository.delete(medico);
 //    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DatosRespuestaMedico> retornarDatosMedico(@PathVariable Long id) {
+        Medico medico = medicoRepository.getReferenceById(id);
+        var datosMedico = new DatosRespuestaMedico(medico.getId(), medico.getNombre(), medico.getEmail(),
+                medico.getTelefono(), medico.getEspecialidad().toString(),medico.getDocumento(),
+                new DatosDireccion(medico.getDireccion().getCalle(), medico.getDireccion().getDistrito(),
+                        medico.getDireccion().getCiudad(), medico.getDireccion().getNumero(),
+                        medico.getDireccion().getComplemento()));
+        return ResponseEntity.ok(datosMedico);
+    }
 }
