@@ -2,8 +2,8 @@ package med.voll.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.voll.api.direccion.DatosDireccion;
-import med.voll.api.medico.*;
+import med.voll.api.domain.direccion.DatosDireccion;
+import med.voll.api.domain.medico.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/medicos")//Mapea endpoint
@@ -24,7 +23,7 @@ public class MedicoController {
 
     @PostMapping
     public ResponseEntity<DatosRespuestaMedico> registrarMedico(@RequestBody @Valid DatosRegistroMedicos datosRegistroMedicos,
-                                          UriComponentsBuilder uriComponentsBuilder) {
+                                                                UriComponentsBuilder uriComponentsBuilder) {
         //UriComponentsBuildes es una clase auxiliar que ayuda para obtener los datos del servidor
         Medico medico = medicoRepository.save(new Medico(datosRegistroMedicos));
         DatosRespuestaMedico datosRespuestaMedico = new DatosRespuestaMedico(medico.getId(), medico.getNombre(), medico.getEmail(),
